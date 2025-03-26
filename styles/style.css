@@ -50,6 +50,7 @@ body {
     background: linear-gradient(135deg, var(--color-dark) 0%, #3a0080 100%);
     animation: backgroundPulse 20s infinite alternate;
     background-size: 200% 200%;
+    position: relative;
 }
 
 @keyframes backgroundPulse {
@@ -346,6 +347,116 @@ button:active {
     transform-origin: bottom left;
 }
 
+/* --- Info-Bubble (Sprechblase) Styling --- */
+.info-bubble {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 100;
+}
+
+.bubble-content {
+    position: relative;
+    background-color: var(--color-neon-green);
+    color: var(--color-dark);
+    padding: 12px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    min-width: 80px;
+    max-width: 80px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.bubble-content:before {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 15px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: var(--color-neon-green) transparent transparent;
+}
+
+.bubble-content:hover {
+    min-width: 300px;
+    max-width: 300px;
+    height: auto;
+    padding: 20px;
+}
+
+.bubble-title {
+    position: absolute;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.bubble-content:hover .bubble-title {
+    font-size: 18px;
+    position: static;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.bubble-expanded {
+    opacity: 0;
+    height: 0;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+
+.bubble-content:hover .bubble-expanded {
+    opacity: 1;
+    height: auto;
+    margin-top: 10px;
+}
+
+.bubble-expanded h3 {
+    margin-bottom: 10px;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+    font-size: 16px;
+    color: var(--color-dark);
+}
+
+.bubble-expanded p {
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.team-info {
+    margin-top: 10px;
+}
+
+.team-info h4 {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+}
+
+.team-info ul {
+    list-style: none;
+}
+
+.team-info li {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.team-info span {
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
 /* --- Hilfklassen --- */
 .hidden {
     display: none;
@@ -370,5 +481,15 @@ button:active {
 
     button {
         padding: 12px;
+    }
+
+    .info-bubble {
+        bottom: 15px;
+        left: 15px;
+    }
+
+    .bubble-content:hover {
+        min-width: 260px;
+        max-width: 260px;
     }
 }
