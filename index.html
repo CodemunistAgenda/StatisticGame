@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatisticGame - Login</title>
+    <script src="https://kit.fontawesome.com/6b08a3fa44.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./styles/style.css">
+    <!-- reCAPTCHA v3 Skript wird weiterhin im Hintergrund verwendet -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfZkwArAAAAAPbiNthyBddRjIxwC-uBmGP24dHA"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top section -->
+        <div class="top-section">
+            <h2>WILLKOMMEN BEI</h2>
+            <p>Frage stellen Antwort geben</p>
+        </div>
+
+        <!-- Form section -->
+        <div class="form-section">
+            <form id="auth-form" method="POST" action="#" onsubmit="return false;">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">E-Mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Passwort</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" required>
+                        <span class="password-toggle" onclick="togglePasswordVisibility('password')">
+                            <i class="fas fa-eye" id="password-icon"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="input-group hidden" id="confirm-password-group">
+                    <label for="confirm-password">Passwort bestätigen</label>
+                    <div class="password-container">
+                        <input type="password" id="confirm-password" name="confirm-password">
+                        <span class="password-toggle" onclick="togglePasswordVisibility('confirm-password')">
+                            <i class="fas fa-eye" id="confirm-password-icon"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Sichtbarer reCAPTCHA Hinweis -->
+                <div class="recaptcha-notice">
+                    <div class="recaptcha-text">
+                        <i class="fas fa-shield-alt"></i>
+                        Dieses Formular ist durch reCAPTCHA geschützt
+                    </div>
+                </div>
+
+                <!-- Hidden field for reCAPTCHA token -->
+                <input type="hidden" id="recaptcha-token" name="g-recaptcha-response">
+                <input type="hidden" id="form-type" name="formType" value="login">
+
+                <button type="button" id="submit-btn" onclick="submitForm()">Login</button>
+
+                <p class="toggle-form">
+                    Kein Konto? <span id="toggle-link">Registrieren</span>
+                </p>
+            </form>
+        </div>
+
+        <!-- Bottom section -->
+        <div class="bottom-section">
+            MACH DIR EINEN ACCOUNT UM DEINE UND ERGEBNIS ANDERER ZU SEHEN
+        </div>
+    </div>
+
+    <script>
+        // Elemente auswählen
+        const formTitle = document.querySelector(".top-section h2");
+        const confirmPasswordGroup = document.getElementById("confirm-password-group");
+        const submitBtn = document.getElementById("submit-btn");
+        const toggleLink = document.getElementById("toggle-link");
+        const formType = document.getElementById("form-type");
+        const authForm = document.getElementById("auth-form");
+
+        // Event-Listener für den Toggle-Link hinzufügen
+        toggleLink.addEventListener("click", toggleForm);
+
+        // Zwischen Login- und Registrierungsformular umschalten
+        function toggleForm() {
+            if (formType.value === "login") {
+                // Zu Registrierung wechseln
+                formTitle.innerText = "REGISTRIEREN";
+                confirmPasswordGroup.classList.remove("hidden");
+                submitBtn.innerText = "Registrieren";
+                toggleLink.innerText = "Einloggen";
+                formType.value = "register";
+                // Für Entwicklung/Test verwenden wir einen Hashtag anstelle eines echten Endpunkts
+                authForm.setAttribute("action", "#register");
+            } else {
+                // Zu Login wechseln
+                formTitle.innerText = "WILLKOMMEN BEI";
+                confirmPasswordGroup.classList.add("hidden");
+                submitBtn.innerText = "Login";
+                toggleLink.innerText = "Registrieren";
+                formType.value = "login";
+                // Für Entwicklung/Test verwenden wir einen Hashtag anstelle eines echten Endpunkts
+                authForm.setAttribute("action", "#login");
+            }
+        }
+
+        // Passwort-Sichtbarkeit umschalten Funktion
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const passwordIcon = document.getElementById(inputId + '-icon');
+
+            if (passwordInput.type === "password") {
+                // Passwort anzeigen
+                passwordInput.type = "text";
+                passwordIcon.classList.remove("fa-eye");
+                passwordIcon.classList.add("fa-eye-slash");
+            } else {
+                // Passwort verbergen
+                passwordInput.type = "password";
+                passwordIcon.classList.remove("fa-eye-slash");
+                passwordIcon.classList.add("fa-eye");
+            }
+        }
+
+        // Enter-Taste Funktionalität für alle Eingabefelder
+        const inputFields = document.querySelectorAll('input:not([type="hidden"])');
+        inputFields.forEach((input, index) => {
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+
+                    // Wenn es nicht das letzte Feld ist, zum nächsten Feld wechseln
+                    if (index < inputFields.length - 1 && !inputFields[index + 1].parentElement.classList.contains('hidden')) {
+                        inputFields[index + 1].focus();
+                    } else {
+                        // Bei letztem Feld das Formular absenden
+                        submitForm();
+                    }
+                }
+            });
+        });
+
+        // Formular-Übermittlung mit reCAPTCHA v3
+        function submitForm() {
+            console.log("Formular wird gesendet...");
+
+            // Für Entwicklungs-/Testzwecke zeigen wir, was passieren würde
+            const formData = new FormData(authForm);
+            const formEntries = Array.from(formData.entries());
+
+            console.log("Formulardaten, die gesendet würden:", formEntries);
+
+            // reCAPTCHA ausführen
+            grecaptcha.execute('6LfZkwArAAAAAPbiNthyBddRjIxwC-uBmGP24dHA', { action: 'submit' })
+                .then(function (token) {
+                    // Token zum Formular hinzufügen
+                    document.getElementById('recaptcha-token').value = token;
+                    console.log("reCAPTCHA-Token generiert:", token.substring(0, 20) + "...");
+
+                    // Alert für Testzwecke
+                    alert("Formular würde jetzt gesendet werden.\n" +
+                        "Formtyp: " + formType.value + "\n" +
+                        "In einer Produktionsumgebung würde die Anfrage an den Backend-Server gesendet werden.");
+
+                    // In einer realen Umgebung würden Sie dies aktivieren:
+                    // authForm.submit();
+                })
+                .catch(function (error) {
+                    console.error('reCAPTCHA Fehler:', error);
+                    alert('Bei der Überprüfung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.');
+                });
+        }
+    </script>
+</body>
+
+</html>
