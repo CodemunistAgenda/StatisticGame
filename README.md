@@ -87,6 +87,9 @@ Das **StatisticGame** ist ein innovatives, interaktives Fragespiel, das ohne fal
 - Erweiterung der **Fragensammlung**.  
 - Implementierung einer **mehrsprachigen Unterstützung**.  
 
+
+![Excalidraw](image.png)
+
 ---
 
 *Dokumentation erstellt am: 26. März 2025*
