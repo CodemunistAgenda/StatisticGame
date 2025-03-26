@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatisticGame - Spieloberflaeche</title>
+    <script src="https://kit.fontawesome.com/6b08a3fa44.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../styles/Quiz.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Top section -->
+        <div class="top-section">
+            <h2>STATISTIC GAME</h2>
+            <p>Frage stellen, Antwort geben</p>
+        </div>
+
+        <!-- Fortschrittsanzeige -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-text"><span id="current-question">1</span> von <span id="total-questions">15</span>
+            </div>
+        </div>
+
+        <!-- Game section -->
+        <div class="game-section">
+            <div class="question-container">
+                <h3 id="question-text">Gegen wen wuerdest du als Endgegner kaempfen?</h3>
+            </div>
+
+            <div class="options-container">
+                <div class="option" id="option-a" onclick="selectOption('a')">
+                    <div class="option-letter">A</div>
+                    <div class="option-text">Maus</div>
+                    <div class="option-stats hidden">
+                        <div class="stats-bar">
+                            <div class="stats-fill" id="stats-fill-a" style="width: 65%"></div>
+                        </div>
+                        <div class="stats-percentage" id="stats-percentage-a">65%</div>
+                    </div>
+                </div>
+
+                <div class="option" id="option-b" onclick="selectOption('b')">
+                    <div class="option-letter">B</div>
+                    <div class="option-text">Elefant</div>
+                    <div class="option-stats hidden">
+                        <div class="stats-bar">
+                            <div class="stats-fill" id="stats-fill-b" style="width: 35%"></div>
+                        </div>
+                        <div class="stats-percentage" id="stats-percentage-b">35%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="submit-btn" onclick="submitAnswer()">Abstimmen</button>
+                <button id="next-btn" class="hidden" onclick="nextQuestion()">Weiter</button>
+            </div>
+        </div>
+
+        <!-- Bottom section -->
+        <div class="bottom-section">
+            STATISTIKEN ZEIGEN WIE ANDERE SPIELER GEANTWORTET HABEN
+        </div>
+    </div>
+
+    <!-- About Info Sprechblase -->
+    <div class="info-bubble">
+        <div class="bubble-content">
+            <div class="bubble-title">About</div>
+            <div class="bubble-expanded">
+                <h3>StatisticGame</h3>
+                <p>Ein Fragespiel ohne falsche Antworten, das zeigt, wie viel Prozent der Nutzer welche Frage gewaehlt
+                    haben.</p>
+                <div class="team-info">
+                    <h4>Unser Team:</h4>
+                    <ul>
+                        <li><span>Mark</span> - Projektmanager</li>
+                        <li><span>Andre & Randy</span> - Backend</li>
+                        <li><span>Chris</span> - Frontend</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fragen-Array mit allen 15 Fragen
+        const questions = [
+            {
+                question: "Gegen wen wuerdest du als Endgegner kaempfen?",
+                options: {
+                    a: "Maus",
+                    b: "Elefant"
+                },
+                stats: {
+                    a: 65,
+                    b: 35
+                }
+            },
+            {
+                question: "Welche Superkraft haettest du lieber?",
+                options: {
+                    a: "Unsichtbarkeit",
+                    b: "Fliegen koennen"
+                },
+                stats: {
+                    a: 42,
+                    b: 58
+                }
+            },
+            {
+                question: "Wo wuerdest du lieber leben?",
+                options: {
+                    a: "Am Strand",
+                    b: "In den Bergen"
+                },
+                stats: {
+                    a: 51,
+                    b: 49
+                }
+            },
+            {
+                question: "Was isst du lieber?",
+                options: {
+                    a: "Pizza",
+                    b: "Burger"
+                },
+                stats: {
+                    a: 68,
+                    b: 32
+                }
+            },
+            {
+                question: "Welches Haustier haettest du lieber?",
+                options: {
+                    a: "Hund",
+                    b: "Katze"
+                },
+                stats: {
+                    a: 54,
+                    b: 46
+                }
+            },
+            {
+                question: "Wie verbringst du deinen Urlaub lieber?",
+                options: {
+                    a: "Abenteuer & Aktivitaeten",
+                    b: "Entspannung & Ruhe"
+                },
+                stats: {
+                    a: 47,
+                    b: 53
+                }
+            },
+            {
+                question: "Welches Zeitreiseziel wuerdest du waehlen?",
+                options: {
+                    a: "Vergangenheit",
+                    b: "Zukunft"
+                },
+                stats: {
+                    a: 38,
+                    b: 62
+                }
+            },
+            {
+                question: "Was ist dir wichtiger?",
+                options: {
+                    a: "Reichtum",
+                    b: "Ruhm"
+                },
+                stats: {
+                    a: 76,
+                    b: 24
+                }
+            },
+            {
+                question: "Wie kommunizierst du lieber?",
+                options: {
+                    a: "Textnachrichten",
+                    b: "Telefonieren"
+                },
+                stats: {
+                    a: 72,
+                    b: 28
+                }
+            },
+            {
+                question: "Was wuerdest du vorziehen?",
+                options: {
+                    a: "Nie mehr frieren",
+                    b: "Nie mehr schwitzen"
+                },
+                stats: {
+                    a: 45,
+                    b: 55
+                }
+            },
+            {
+                question: "Welches Musikgenre bevorzugst du?",
+                options: {
+                    a: "Rock",
+                    b: "Hip-Hop"
+                },
+                stats: {
+                    a: 59,
+                    b: 41
+                }
+            },
+            {
+                question: "Was ist dir lieber?",
+                options: {
+                    a: "Frueh aufstehen",
+                    b: "Spaet schlafen gehen"
+                },
+                stats: {
+                    a: 31,
+                    b: 69
+                }
+            },
+            {
+                question: "Was schaust du lieber?",
+                options: {
+                    a: "Filme",
+                    b: "Serien"
+                },
+                stats: {
+                    a: 37,
+                    b: 63
+                }
+            },
+            {
+                question: "Welche Faehigkeit haettest du lieber?",
+                options: {
+                    a: "Jedes Instrument spielen koennen",
+                    b: "Jede Sprache sprechen koennen"
+                },
+                stats: {
+                    a: 28,
+                    b: 72
+                }
+            },
+            {
+                question: "Wo shoppst du lieber?",
+                options: {
+                    a: "Im Laden",
+                    b: "Online"
+                },
+                stats: {
+                    a: 44,
+                    b: 56
+                }
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let selectedOption = null;
+        document.getElementById('total-questions').textContent = questions.length;
+
+        // Funktion zur Auswahl einer Option
+        function selectOption(option) {
+            // Nur Auswahl erlauben, wenn noch nicht abgesendet wurde
+            if (!document.getElementById('submit-btn').classList.contains('hidden')) {
+                selectedOption = option;
+
+                // Alle Optionen zuruecksetzen
+                document.getElementById('option-a').classList.remove('selected');
+                document.getElementById('option-b').classList.remove('selected');
+
+                // Ausgewaehlte Option markieren
+                document.getElementById('option-' + option).classList.add('selected');
+            }
+        }
+
+        // Funktion zum Absenden der Antwort
+        function submitAnswer() {
+            if (selectedOption) {
+                // Submit-Button ausblenden und Next-Button einblenden
+                document.getElementById('submit-btn').classList.add('hidden');
+                document.getElementById('next-btn').classList.remove('hidden');
+
+                // Statistiken fuer beide Optionen anzeigen
+                const statsA = document.querySelector('#option-a .option-stats');
+                const statsB = document.querySelector('#option-b .option-stats');
+
+                statsA.classList.remove('hidden');
+                statsB.classList.remove('hidden');
+
+                // Aktuelle Frage abrufen
+                const currentQuestion = questions[currentQuestionIndex];
+
+                // Statistiken aktualisieren
+                document.getElementById('stats-fill-a').style.width = currentQuestion.stats.a + '%';
+                document.getElementById('stats-percentage-a').textContent = currentQuestion.stats.a + '%';
+
+                document.getElementById('stats-fill-b').style.width = currentQuestion.stats.b + '%';
+                document.getElementById('stats-percentage-b').textContent = currentQuestion.stats.b + '%';
+
+                // Hervorhebung der gewaehlten Option beibehalten
+                // Beide Optionen koennen nicht mehr ausgewaehlt werden
+                document.getElementById('option-a').classList.add('answered');
+                document.getElementById('option-b').classList.add('answered');
+            } else {
+                alert('Bitte waehle eine Option aus!');
+            }
+        }
+
+        // Funktion zum Wechseln zur naechsten Frage
+        function nextQuestion() {
+            currentQuestionIndex++;
+
+            // Pruefen, ob noch Fragen uebrig sind
+            if (currentQuestionIndex < questions.length) {
+                // Fortschritt aktualisieren
+                document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+                document.getElementById('progress-bar').style.width = ((currentQuestionIndex + 1) / questions.length * 100) + '%';
+
+                // Neue Frage anzeigen
+                const nextQuestion = questions[currentQuestionIndex];
+                document.getElementById('question-text').textContent = nextQuestion.question;
+
+                // Optionen aktualisieren
+                document.querySelector('#option-a .option-text').textContent = nextQuestion.options.a;
+                document.querySelector('#option-b .option-text').textContent = nextQuestion.options.b;
+
+                // Statistiken zuruecksetzen und verbergen
+                document.querySelector('#option-a .option-stats').classList.add('hidden');
+                document.querySelector('#option-b .option-stats').classList.add('hidden');
+
+                // Buttons zuruecksetzen
+                document.getElementById('submit-btn').classList.remove('hidden');
+                document.getElementById('next-btn').classList.add('hidden');
+
+                // Auswahl zuruecksetzen
+                selectedOption = null;
+                document.getElementById('option-a').classList.remove('selected', 'answered');
+                document.getElementById('option-b').classList.remove('selected', 'answered');
+            } else {
+                // Alle Fragen beantwortet - Spielende
+                document.querySelector('.game-section').innerHTML = `
+                    <div class="thank-you-container">
+                        <h3>VIELEN DANK!</h3>
+                        <p>Du hast alle Fragen beantwortet. Wir hoffen, du hattest Spass!</p>
+                        <div class="stats-summary">
+                            <div class="summary-icon"><i class="fas fa-chart-pie"></i></div>
+                            <p>Deine Antworten wurden gespeichert und in unsere Statistiken aufgenommen.</p>
+                        </div>
+                        <button id="logout-btn" onclick="window.location.href='../index.html'">Ausloggen</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Beim Laden der Seite den Fortschrittsbalken initialisieren
+        document.getElementById('progress-bar').style.width = (1 / questions.length * 100) + '%';
+    </script>
+</body>
+
+</html>

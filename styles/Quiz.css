@@ -1,0 +1,611 @@
+/*
+ * StatisticGame - Game Show Styling für Spieloberfläche
+ * Enthält alle Styles für die Fragenseite
+ * Design-Konzept: "Make It Pop!" & "For Trend Setters"
+ */
+
+/* --- Font-Import für Game Show Font --- */
+@font-face {
+    font-family: 'GameFont';
+    src: url('../assets/fonts/Gameshow.otf');
+    font-display: swap;
+}
+
+/* --- Block-Schrift Fallback für Sonderzeichen --- */
+.blocky-text {
+    font-family: 'GameFont', 'Impact', 'Arial Black', 'Blackletter', sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* --- Farbpalette als CSS-Variablen --- */
+:root {
+    --color-magenta: #FF1493;
+    /* Helles Pink */
+    --color-purple: #9932CC;
+    /* Kräftiges Lila */
+    --color-violet: #8A2BE2;
+    /* Violett */
+    --color-cyan: #00FF8F;
+    /* Leuchtendes Cyan */
+    --color-neon-green: #00FF8F;
+    /* Neongrün */
+    --color-yellow: #FFD700;
+    /* Goldgelb */
+
+    --color-dark: #1A0033;
+    /* Sehr dunkles Lila */
+    --color-light: #FFFFFF;
+    /* Weiß */
+    --color-neutral: #F0F0F0;
+    /* Hellgrau */
+}
+
+/* --- CSS Reset und Basis-Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    font-family: GameFont, 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--color-dark) 0%, #3a0080 100%);
+    animation: backgroundPulse 20s infinite alternate;
+    background-size: 200% 200%;
+    position: relative;
+}
+
+@keyframes backgroundPulse {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* --- Container-Styling --- */
+.container {
+    width: 800px;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 20, 147, 0.2);
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(26, 0, 51, 0.8);
+    backdrop-filter: blur(10px);
+    transform: translateY(0);
+    transition: transform 0.3s;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+}
+
+/* --- Styling für den oberen Bereich --- */
+.top-section {
+    background: linear-gradient(90deg, var(--color-magenta), var(--color-purple));
+    text-align: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    font-family: GameFont, 'Segoe UI', sans-serif;
+}
+
+.top-section::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 60%);
+    animation: shine 6s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes shine {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.top-section h2 {
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    color: var(--color-light);
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+
+.top-section p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+/* --- Fortschrittsanzeige --- */
+.progress-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.progress-bar {
+    height: 8px;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-neon-green));
+    border-radius: 10px;
+    width: 6.66%;
+    /* 1/15 der Gesamtbreite */
+    box-shadow: 0 0 10px rgba(0, 255, 143, 0.4);
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+    position: absolute;
+    top: 35px;
+    right: 20px;
+    color: var(--color-light);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* --- Game Section Styling --- */
+.game-section {
+    padding: 30px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.question-container {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.question-container h3 {
+    color: var(--color-light);
+    font-size: 24px;
+    font-weight: 600;
+    padding: 0 20px;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* --- Options Styling --- */
+.options-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.option {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.option:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+}
+
+.option.selected {
+    border-color: var(--color-neon-green);
+    box-shadow: 0 0 15px rgba(0, 255, 143, 0.3);
+}
+
+.option.answered {
+    cursor: default;
+}
+
+.option.answered:hover {
+    transform: none;
+}
+
+.option-letter {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--color-magenta), var(--color-purple));
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-light);
+    font-weight: 700;
+    font-size: 18px;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+}
+
+.option-text {
+    color: var(--color-light);
+    font-size: 20px;
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Statistik-Anzeige --- */
+.option-stats {
+    margin-top: 20px;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stats-bar {
+    height: 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.stats-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-neon-green));
+    border-radius: 6px;
+    width: 0;
+    transition: width 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+}
+
+.stats-percentage {
+    text-align: right;
+    color: var(--color-neon-green);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* --- Action Buttons --- */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 14px 30px;
+    border: none;
+    background: linear-gradient(90deg, var(--color-magenta), var(--color-violet));
+    color: var(--color-light);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(153, 50, 204, 0.4);
+    min-width: 180px;
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: 0.5s;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(153, 50, 204, 0.5);
+}
+
+button:hover::after {
+    left: 100%;
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button#next-btn {
+    background: linear-gradient(90deg, var(--color-cyan), var(--color-neon-green));
+    box-shadow: 0 5px 15px rgba(0, 255, 143, 0.4);
+}
+
+button#next-btn:hover {
+    box-shadow: 0 7px 20px rgba(0, 255, 143, 0.5);
+}
+
+/* --- Unterer Bereich Styling --- */
+.bottom-section {
+    background-color: rgba(0, 0, 0, 0.3);
+    text-align: center;
+    padding: 14px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--color-light);
+    position: relative;
+    overflow: hidden;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+}
+
+.bottom-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine-effect 3s infinite;
+    pointer-events: none;
+}
+
+@keyframes shine-effect {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* --- Thank You Screen Styling --- */
+.thank-you-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+    min-height: 300px;
+}
+
+.thank-you-container h3 {
+    font-family: 'GameFont', 'Impact', 'Arial Black', sans-serif;
+    color: var(--color-light);
+    font-size: 32px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.thank-you-container p {
+    color: var(--color-light);
+    font-size: 18px;
+    margin-bottom: 25px;
+    max-width: 80%;
+    line-height: 1.5;
+}
+
+.stats-summary {
+    background-color: rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0 30px;
+    max-width: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.summary-icon {
+    font-size: 24px;
+    color: var(--color-neon-green);
+    margin-right: 15px;
+}
+
+.stats-summary p {
+    margin: 0;
+    font-size: 15px;
+    text-align: left;
+}
+
+#logout-btn {
+    background: linear-gradient(90deg, var(--color-magenta), var(--color-purple));
+    min-width: 200px;
+}
+
+/* --- Info-Bubble (Sprechblase) Styling --- */
+.info-bubble {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 100;
+}
+
+.bubble-content {
+    position: relative;
+    background-color: var(--color-neon-green);
+    color: var(--color-dark);
+    padding: 12px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    min-width: 80px;
+    max-width: 80px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.bubble-content:before {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 15px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: var(--color-neon-green) transparent transparent;
+}
+
+.bubble-content:hover {
+    min-width: 300px;
+    max-width: 300px;
+    height: auto;
+    padding: 20px;
+}
+
+.bubble-title {
+    position: absolute;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.bubble-content:hover .bubble-title {
+    font-size: 18px;
+    position: static;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.bubble-expanded {
+    opacity: 0;
+    height: 0;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+
+.bubble-content:hover .bubble-expanded {
+    opacity: 1;
+    height: auto;
+    margin-top: 10px;
+}
+
+.bubble-expanded h3 {
+    margin-bottom: 10px;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+    font-size: 16px;
+    color: var(--color-dark);
+}
+
+.bubble-expanded p {
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.team-info {
+    margin-top: 10px;
+}
+
+.team-info h4 {
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-family: 'GameFont', 'Segoe UI', sans-serif;
+}
+
+.team-info ul {
+    list-style: none;
+}
+
+.team-info li {
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.team-info span {
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
+/* --- Hilfklassen --- */
+.hidden {
+    display: none;
+}
+
+/* --- Responsives Design --- */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    .options-container {
+        flex-direction: column;
+    }
+
+    .option-text {
+        min-height: unset;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .question-container h3 {
+        font-size: 20px;
+        color: var(--color-cyan);
+    }
+
+    .thank-you-container h3 {
+        font-size: 26px;
+    }
+
+    .stats-summary {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .summary-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .stats-summary p {
+        text-align: center;
+    }
+}
